@@ -29,11 +29,11 @@ export class HelloCdkStack extends cdk.Stack {
 
     // 3. WebSocketから呼びだされるLambda関数の定義
     const helloWorldFunction = new lambda.Function(this, 'HelloWorldFunction', {
-      runtime: lambda.Runtime.NODEJS_20_X,
-      code: lambda.Code.fromAsset('lambda'),
-      handler: 'hello.handler',
-      // もしLambdaで endpoint を使うなら、ここでwebSocketApi.apiIdを参照可能
-      // 例: stageName が 'prod' の場合
+      runtime: lambda.Runtime.PYTHON_3_9,  // Python ランタイムを指定 
+      code: lambda.Code.fromAsset('lambda', {// Python ファイルを置くディレクトリを指定 (例: 'lambda')
+        exclude: ['hello.js']  // この行で除外するファイルを指定
+      }),
+      handler: 'hello.lambda_handler',        // Python コード中のハンドラー関数
       environment: {
         WEBSOCKET_ENDPOINT: `https://${webSocketApi.apiId}.execute-api.${this.region}.amazonaws.com/prod`,
       },
