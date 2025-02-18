@@ -2,6 +2,9 @@ import os
 import json
 import boto3
 
+from langchain.chat_models import init_chat_model
+from langchain.schema import HumanMessage
+
 def lambda_handler(event, context):
     print("Received event:", json.dumps(event, indent=2))
 
@@ -34,7 +37,9 @@ def lambda_handler(event, context):
     else:
         # それ以外のルートはメッセージを Echo
         print(f"Received message: {body}")
-        message_to_send = f"Echo: {body}"
+        model = init_chat_model("gpt-4o-mini", model_provider="openai")
+        content = model.invoke([HumanMessage(content=body)]).content
+        message_to_send = f"ChatBot: {content}"
 
         # クライアントへメッセージを送信
         try:
