@@ -1,0 +1,4 @@
+langchain[openai]
+uvicorn
+websockets==13.1
+starlette

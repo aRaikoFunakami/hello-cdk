@@ -12,3 +12,6 @@ cdk.context.json
 .env
 aws-exports.js
 tsconfig.tsbuildinfo
+
+# python
+__pycache__
