@@ -17,3 +17,5 @@ tsconfig.tsbuildinfo
 
 # python
 __pycache__
+.venv
+

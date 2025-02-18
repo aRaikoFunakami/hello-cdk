@@ -7,9 +7,16 @@ from starlette.staticfiles import StaticFiles
 from starlette.websockets import WebSocket
 
 from langchain_openai_voice import OpenAIVoiceReactAgent
-from realtime_utils import *
-from realtime_tools import TOOLS
-from realtime_prompt import INSTRUCTIONS
+
+from typing import AsyncIterator
+
+TOOLS = []
+INSTRUCTIONS = ""
+
+async def websocket_stream(websocket: WebSocket) -> AsyncIterator[str]:
+    while True:
+        data = await websocket.receive_text()
+        yield data
 
 
 async def websocket_endpoint(websocket: WebSocket):
@@ -19,7 +26,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     logging.info(f"browser_receive_stream: {browser_receive_stream}")
     agent = OpenAIVoiceReactAgent(
-        model="gpt-4o-realtime-preview",
+        model="gpt-4o-mini-realtime-preview-2024-12-17",
         tools=TOOLS,
         instructions=INSTRUCTIONS,
     )
@@ -31,9 +38,6 @@ async def homepage(request):
     with open("static/index.html") as f:
         html = f.read()
         return HTMLResponse(html)
-
-
-# catchall route to load files from src/server/static
 
 
 routes = [Route("/", homepage), WebSocketRoute("/ws", websocket_endpoint)]
