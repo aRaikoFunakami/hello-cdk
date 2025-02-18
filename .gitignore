@@ -1,6 +1,8 @@
 *.js
 !jest.config.js
 !hello.js
+!audio-playback-worklet.js
+!audio-processor-worklet.js
 *.d.ts
 node_modules
 
