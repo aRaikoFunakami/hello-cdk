@@ -10,8 +10,9 @@ from langchain_openai_voice import OpenAIVoiceReactAgent
 
 from typing import AsyncIterator
 
+from realtime_chat_prompt import INSTRUCTIONS
+
 TOOLS = []
-INSTRUCTIONS = ""
 
 async def websocket_stream(websocket: WebSocket) -> AsyncIterator[str]:
     while True:
