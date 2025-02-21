@@ -127,7 +127,17 @@
 
         async function startAudio() {
             try {
-                const ws = new WebSocket("ws://localhost:3000/ws");
+                // 現在のページがHTTPSなら wss://、HTTPなら ws:// を使う
+                const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+                let host = location.host; // 例: example.com、example.com:3000 等
+                if (host.includes('localhost')) {
+                    // ポート番号を含む場合はそのまま置き換える
+                    // 例: localhost:3000 -> 127.0.0.1:3000
+                    host = host.replace('localhost', '127.0.0.1');
+                }
+                // /ws はサーバサイドのWebSocketエンドポイントに合わせて変更
+                const wsUrl = `${protocol}//${host}/ws`;
+                const ws = new WebSocket(wsUrl);
 
                 const audioPlayer = new Player();
                 await audioPlayer.init(24000);
